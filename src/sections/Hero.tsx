@@ -1,4 +1,6 @@
 import { m, type Variants } from 'motion/react';
+import { useState } from 'react';
+import { isHydrating } from '../lib/hydration';
 import { Button, SocialBar } from '../components/ds';
 import { DotField, FloatingShape } from '../components/Decor';
 import { Magnetic } from '../components/Magnetic';
@@ -52,15 +54,19 @@ function SplitText({ text }: { text: string }) {
 
 export function Hero() {
   const reduced = usePrefersReducedMotion();
+  // Prerendered (first load): the hero is already painted from HTML, so the
+  // entrance runs in CSS from the first frame (.hero-css-in) and nothing waits
+  // on JS. Client-side mounts (e.g. back from a project page) use the Motion variants.
+  const [fromHtml] = useState(isHydrating);
   const parallax = usePointerParallax();
   const field = parallax.layer(-1);
   const shapes = parallax.layer(1);
 
   return (
     <m.section
-      className="hero"
+      className={fromHtml ? 'hero hero-css-in' : 'hero'}
       aria-labelledby="hero-role"
-      initial={reduced ? false : 'hidden'}
+      initial={reduced || fromHtml ? false : 'hidden'}
       animate="show"
       variants={container}
       {...parallax.handlers}
@@ -68,13 +74,35 @@ export function Hero() {
       <DotField className="hero-field" x={field.x} y={field.y} />
       <div className="hero-shapes">
         <FloatingShape kind="diamond" at={{ left: '6%', top: 70 }} x={shapes.x} y={shapes.y} />
-        <FloatingShape kind="triangle" speed="slow" at={{ left: '46%', top: 90 }} x={shapes.x} y={shapes.y} />
-        <FloatingShape kind="squiggle" at={{ left: '52%', bottom: 120 }} x={shapes.x} y={shapes.y} />
-        <FloatingShape kind="diamond-sm" speed="slow" at={{ left: '40%', bottom: 60 }} x={shapes.x} y={shapes.y} />
+        <FloatingShape
+          kind="triangle"
+          speed="slow"
+          at={{ left: '46%', top: 90 }}
+          x={shapes.x}
+          y={shapes.y}
+        />
+        <FloatingShape
+          kind="squiggle"
+          at={{ left: '52%', bottom: 120 }}
+          x={shapes.x}
+          y={shapes.y}
+        />
+        <FloatingShape
+          kind="diamond-sm"
+          speed="slow"
+          at={{ left: '40%', bottom: 60 }}
+          x={shapes.x}
+          y={shapes.y}
+        />
       </div>
       <div className="hero-shapes-m">
         <FloatingShape kind="diamond-sm" mobile="show" at={{ right: 24, top: 36 }} />
-        <FloatingShape kind="squiggle" mobile="show" at={{ right: 40, top: 150 }} size={{ width: 40, height: 20 }} />
+        <FloatingShape
+          kind="squiggle"
+          mobile="show"
+          at={{ right: 40, top: 150 }}
+          size={{ width: 40, height: 20 }}
+        />
       </div>
       <div className="wrap">
         <div className="hero-grid">
@@ -106,7 +134,7 @@ export function Hero() {
             <m.figure className="hero-photo" variants={portrait}>
               <img
                 src="/img/hero-920.webp"
-                srcSet="/img/hero-460.webp 460w, /img/hero-920.webp 920w"
+                srcSet="/img/hero-460.webp 460w, /img/hero-600.webp 600w, /img/hero-920.webp 920w"
                 sizes="(max-width: 640px) 300px, (max-width: 1024px) 400px, 460px"
                 alt="Francis Ciril Arulsamy in a blue checked shirt"
                 width="840"

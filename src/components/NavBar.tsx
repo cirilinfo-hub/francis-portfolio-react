@@ -1,5 +1,5 @@
 import { AnimatePresence } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import { navItems, person } from '../data/site';
 import { useActiveSection } from '../hooks/useActiveSection';
@@ -19,6 +19,7 @@ export function NavBar() {
   const { pathname } = useLocation();
   const onHome = pathname === '/';
   const [open, setOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
   const active = useActiveSection(ids, onHome);
   // On a project page, "Projects" is the current section.
   const current = onHome ? active : pathname.startsWith('/projects/') ? 'projects' : null;
@@ -54,7 +55,9 @@ export function NavBar() {
             {navItems.map((item) => (
               <li key={item.id}>
                 <a
-                  className={['nav-link', current === item.id && 'is-current'].filter(Boolean).join(' ')}
+                  className={['nav-link', current === item.id && 'is-current']
+                    .filter(Boolean)
+                    .join(' ')}
                   href={hrefFor(item.id)}
                   aria-current={current === item.id ? (onHome ? 'true' : 'page') : undefined}
                 >
@@ -68,6 +71,7 @@ export function NavBar() {
           Hire Me
         </Button>
         <button
+          ref={menuButton}
           type="button"
           className="icon-btn nav-menu"
           aria-label="Open menu"
@@ -80,7 +84,14 @@ export function NavBar() {
       </div>
       <ScrollProgress />
       <AnimatePresence>
-        {open ? <MenuSheet onClose={() => setOpen(false)} hrefFor={hrefFor} current={current} /> : null}
+        {open ? (
+          <MenuSheet
+            onClose={() => setOpen(false)}
+            hrefFor={hrefFor}
+            current={current}
+            returnFocusTo={menuButton}
+          />
+        ) : null}
       </AnimatePresence>
     </header>
   );

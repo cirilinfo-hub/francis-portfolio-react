@@ -47,10 +47,23 @@ export interface FloatingShapeProps {
  * (CSS `translate`, 9–13s, alternating). Pointer parallax, when given, uses
  * `transform` so the two never fight. Reduced motion: still.
  */
-export function FloatingShape({ kind, at, speed = 'default', size, x, y, mobile = 'hide' }: FloatingShapeProps) {
+export function FloatingShape({
+  kind,
+  at,
+  speed = 'default',
+  size,
+  x,
+  y,
+  mobile = 'hide',
+}: FloatingShapeProps) {
   const cls = ['deco', speed !== 'default' && speed].filter(Boolean).join(' ');
   // Parallax lives on an outer wrapper so its transform does not replace the diamond's rotate(45deg).
-  const wrapStyle: CSSProperties = { position: 'absolute', pointerEvents: 'none', zIndex: 0, ...at };
+  const wrapStyle: CSSProperties = {
+    position: 'absolute',
+    pointerEvents: 'none',
+    zIndex: 0,
+    ...at,
+  };
 
   let shape;
   if (kind === 'diamond' || kind === 'diamond-sm') {
@@ -65,7 +78,11 @@ export function FloatingShape({ kind, at, speed = 'default', size, x, y, mobile 
   } else {
     const s = size ?? (kind === 'triangle' ? { width: 34, height: 30 } : { width: 30, height: 30 });
     shape = (
-      <svg className={`${cls} deco-svg`} style={s} viewBox={kind === 'triangle' ? '0 0 34 30' : '0 0 30 30'}>
+      <svg
+        className={`${cls} deco-svg`}
+        style={s}
+        viewBox={kind === 'triangle' ? '0 0 34 30' : '0 0 30 30'}
+      >
         <path d={kind === 'triangle' ? 'M17 3 31 27H3Z' : 'M15 3 27 26H3Z'} />
       </svg>
     );

@@ -2,7 +2,12 @@ import { useActionState, useEffect, useOptimistic, useRef, useState } from 'reac
 import { useFormStatus } from 'react-dom';
 import { contact } from '../data/site';
 import { submitContact, type ContactMessage } from '../lib/submitContact';
-import { validateContact, validateField, type Field, type FieldErrors } from '../lib/validateContact';
+import {
+  validateContact,
+  validateField,
+  type Field,
+  type FieldErrors,
+} from '../lib/validateContact';
 import { Button } from './ds';
 import { Icon } from './Icon';
 import { TextField } from './TextField';
@@ -20,7 +25,13 @@ const initial: FormState = { status: 'idle', errors: {}, values: EMPTY };
 function SendButton() {
   const { pending } = useFormStatus();
   return (
-    <Button variant="outline" type="submit" disabled={pending} aria-disabled={pending} className="ccard-send">
+    <Button
+      variant="outline"
+      type="submit"
+      disabled={pending}
+      aria-disabled={pending}
+      className="ccard-send"
+    >
       {pending ? 'Sending…' : 'Send'}
     </Button>
   );
@@ -69,18 +80,29 @@ export function ContactCard() {
   const sent = optimisticSent || state.status === 'sent';
   const shown: FieldErrors = { ...state.errors, ...live };
 
+  // Read the value during the event: state updaters run later, when currentTarget is null.
   const check = (field: Field) => (e: { currentTarget: { value: string } }) => {
+    const error = validateField(field, e.currentTarget.value);
     setTouched((t) => ({ ...t, [field]: true }));
-    setLive((l) => ({ ...l, [field]: validateField(field, e.currentTarget.value) }));
+    setLive((l) => ({ ...l, [field]: error }));
   };
   // While a field shows an error, re-check on every keystroke so it clears as soon as it is fixed.
   const recheck = (field: Field) => (e: { currentTarget: { value: string } }) => {
-    if (shown[field]) setLive((l) => ({ ...l, [field]: validateField(field, e.currentTarget.value) }));
+    if (!shown[field]) return;
+    const error = validateField(field, e.currentTarget.value);
+    setLive((l) => ({ ...l, [field]: error }));
   };
-  const ok = (field: Field) => (touched[field] && !shown[field] && field !== 'message' ? 'Looks good' : undefined);
+  const ok = (field: Field) =>
+    touched[field] && !shown[field] && field !== 'message' ? 'Looks good' : undefined;
 
   return (
-    <form ref={formRef} className="ccard" aria-labelledby="ccard-title" noValidate action={formAction}>
+    <form
+      ref={formRef}
+      className="ccard"
+      aria-labelledby="ccard-title"
+      noValidate
+      action={formAction}
+    >
       <h3 className="t-title" id="ccard-title">
         Send A Message
       </h3>

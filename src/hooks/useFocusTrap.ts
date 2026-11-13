@@ -4,22 +4,25 @@ const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /**
- * Keeps Tab / Shift+Tab inside `ref` while `active`, focuses the first
- * focusable element on open, calls `onEscape` on Esc, and returns focus to
- * whatever had it before when the trap is released.
+ * Keeps Tab / Shift+Tab inside `ref` while `active`, focuses `initial` (or
+ * the first focusable element) on open, calls `onEscape` on Esc, and returns
+ * focus to `returnTo` when the trap is released.
  */
 export function useFocusTrap(
   ref: RefObject<HTMLElement | null>,
   active: boolean,
   onEscape: () => void,
+  options: { initial?: string; returnTo?: RefObject<HTMLElement | null> } = {},
 ) {
+  const { initial, returnTo } = options;
   useEffect(() => {
     const node = ref.current;
     if (!active || !node) return;
 
-    const previous = document.activeElement as HTMLElement | null;
+    const back = returnTo?.current ?? null;
     const items = () => Array.from(node.querySelectorAll<HTMLElement>(FOCUSABLE));
-    items()[0]?.focus();
+    const start = (initial ? node.querySelector<HTMLElement>(initial) : null) ?? items()[0];
+    start?.focus();
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -44,9 +47,9 @@ export function useFocusTrap(
     document.addEventListener('keydown', onKey);
     return () => {
       document.removeEventListener('keydown', onKey);
-      previous?.focus();
+      back?.focus();
     };
-  }, [ref, active, onEscape]);
+  }, [ref, active, onEscape, initial, returnTo]);
 }
 
 /** Locks page scroll without a layout jump (scrollbar-gutter keeps the width). */

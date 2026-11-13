@@ -17,7 +17,13 @@ interface DisclosureProps {
  * Ghost button with aria-expanded and a chevron. The region expands with a
  * Motion layout animation (transform-based FLIP), so nothing below jumps.
  */
-export function Disclosure({ label, openLabel, children, defaultOpen = false, className }: DisclosureProps) {
+export function Disclosure({
+  label,
+  openLabel,
+  children,
+  defaultOpen = false,
+  className,
+}: DisclosureProps) {
   const [open, setOpen] = useState(defaultOpen);
   const regionId = useId();
 

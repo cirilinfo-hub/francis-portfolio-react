@@ -1,5 +1,5 @@
 import { m } from 'motion/react';
-import { useRef } from 'react';
+import { useRef, type RefObject } from 'react';
 import { createPortal } from 'react-dom';
 import { navItems, person, social } from '../data/site';
 import { useFocusTrap, useScrollLock } from '../hooks/useFocusTrap';
@@ -13,6 +13,8 @@ interface MenuSheetProps {
   /** Where the links point: "#about" on the home page, "/#about" elsewhere. */
   hrefFor: (id: string) => string;
   current: string | null;
+  /** The menu button; focus returns here when the sheet closes. */
+  returnFocusTo: RefObject<HTMLButtonElement | null>;
 }
 
 /**
@@ -20,10 +22,11 @@ interface MenuSheetProps {
  * Focus lands on the first link, Tab is trapped, Esc closes and focus returns
  * to the menu button. Page scroll is locked and the page behind is inert.
  */
-export function MenuSheet({ onClose, hrefFor, current }: MenuSheetProps) {
+export function MenuSheet({ onClose, hrefFor, current, returnFocusTo }: MenuSheetProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
-  useFocusTrap(ref, true, onClose);
+  // Design note: focus lands on the first link; Esc closes and returns focus to the menu button.
+  useFocusTrap(ref, true, onClose, { initial: '.sheet-link', returnTo: returnFocusTo });
   useScrollLock(true);
 
   return createPortal(
@@ -40,10 +43,20 @@ export function MenuSheet({ onClose, hrefFor, current }: MenuSheetProps) {
       transition={{ type: 'spring', stiffness: 420, damping: 38, mass: 0.9 }}
     >
       <FloatingShape kind="diamond-sm" mobile="show" at={{ right: 40, bottom: 210 }} />
-      <FloatingShape kind="squiggle" mobile="show" at={{ left: 24, bottom: 250 }} size={{ width: 40, height: 20 }} />
+      <FloatingShape
+        kind="squiggle"
+        mobile="show"
+        at={{ left: 24, bottom: 250 }}
+        size={{ width: 40, height: 20 }}
+      />
       <div className="wrap sheet-head">
         <span className="wordmark">{person.name}</span>
-        <button type="button" className="icon-btn sheet-close" aria-label="Close menu" onClick={onClose}>
+        <button
+          type="button"
+          className="icon-btn sheet-close"
+          aria-label="Close menu"
+          onClick={onClose}
+        >
           <Icon name="close" />
         </button>
       </div>
