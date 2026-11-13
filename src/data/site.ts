@@ -4,7 +4,7 @@
 export const person = {
   name: 'Francis Ciril Arulsamy',
   firstName: 'Francis',
-  role: 'Front-End Architect',
+  role: 'Front-End Architect | Front-End Manager',
   intro:
     '18+ years designing scalable front-end architectures, UI design systems and reusable components in Angular, React and TypeScript.',
   location: 'Bangalore, India',
