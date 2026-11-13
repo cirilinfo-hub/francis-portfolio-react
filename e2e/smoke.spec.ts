@@ -87,6 +87,18 @@ test.describe('home', () => {
     }
   });
 
+  test('experience roles expand one at a time', async ({ page }) => {
+    await page.goto('/');
+    const exp = page.locator('#experience');
+    const eurofins = exp.getByRole('button', { name: /Show details for Eurofins/ });
+    await eurofins.scrollIntoViewIfNeeded();
+    await eurofins.click();
+    await expect(exp.getByText(/Improved page load time by 20%/)).toBeVisible();
+    await exp.getByRole('button', { name: /Show details for Wipro/ }).click();
+    await expect(exp.getByText(/Improved page load time by 20%/)).toHaveCount(0);
+    await expect(exp.getByText(/Led front-end teams of 5/)).toBeVisible();
+  });
+
   test('projects filter, then open a project page and return', async ({ page, viewport }) => {
     await page.goto('/');
     const perPage = isMobile(viewport?.width ?? 1440) ? 3 : 6;

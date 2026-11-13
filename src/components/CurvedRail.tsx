@@ -1,5 +1,5 @@
 import { m, useScroll, useTransform } from 'motion/react';
-import { useId, useRef, type ReactNode } from 'react';
+import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { usePrefersReducedMotion } from '../hooks/useMediaQuery';
 import { useNativeViewTimeline } from '../lib/supports';
 
@@ -48,8 +48,28 @@ interface CurvedRailProps {
 export function CurvedRail({ rows }: CurvedRailProps) {
   const ref = useRef<HTMLDivElement>(null);
   const maskId = `tl-mask-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
+  const listRef = useRef<HTMLOListElement>(null);
   const reduced = usePrefersReducedMotion();
-  const h = rows.length * ROW + (rows.length - 1) * GAP;
+  // Fixed geometry for the server render; measured once rows can grow (expanded cards).
+  const fixedH = rows.length * ROW + (rows.length - 1) * GAP;
+  const [measured, setMeasured] = useState<{ h: number; ys: number[] } | null>(null);
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    if (!list || typeof ResizeObserver === 'undefined') return;
+    const measure = () => {
+      const items = Array.from(list.children) as HTMLElement[];
+      const h = list.offsetHeight;
+      const ys = items.map((el) => el.offsetTop + el.offsetHeight / 2);
+      setMeasured((prev) =>
+        prev && prev.h === h && prev.ys.every((y, i) => y === ys[i]) ? prev : { h, ys },
+      );
+    };
+    const ro = new ResizeObserver(measure);
+    ro.observe(list);
+    for (const el of Array.from(list.children)) ro.observe(el);
+    return () => ro.disconnect();
+  }, [rows.length]);
+  const h = measured?.h || fixedH;
   const { d, xAtY } = curve(h);
   const jsFallback = !useNativeViewTimeline() && !reduced;
 
@@ -79,9 +99,9 @@ export function CurvedRail({ rows }: CurvedRailProps) {
         </defs>
         <path d={d} mask={`url(#${maskId})`} />
       </svg>
-      <ol className="tl-list">
+      <ol className="tl-list" ref={listRef}>
         {rows.map((r, i) => {
-          const y = i * (ROW + GAP) + ROW / 2;
+          const y = measured?.ys[i] ?? i * (ROW + GAP) + ROW / 2;
           return (
             <li
               key={r.key}

@@ -1,4 +1,6 @@
 import { LayoutGroup, m } from 'motion/react';
+import { useState } from 'react';
+import { Link } from 'react-router';
 import { CurvedRail } from '../components/CurvedRail';
 import { Disclosure } from '../components/Disclosure';
 import { SectionHeading, TimelineItem } from '../components/ds';
@@ -6,16 +8,70 @@ import { FloatingShape } from '../components/Decor';
 import { EducationCard } from '../components/EducationCard';
 import { Reveal } from '../components/Reveal';
 import { education, RECENT_ROLE_COUNT, roles, type Role } from '../data/experience';
+import { projects } from '../data/projects';
 import { useIsCompact, usePrefersReducedMotion } from '../hooks/useMediaQuery';
 
-const roleItem = (r: Role) => (
-  <TimelineItem org={`${r.org} · ${r.period}`} title={r.title} active={r.current}>
+function RoleDetails({ role }: { role: Role }) {
+  const work = projects.filter((p) => p.company === role.org);
+  return (
+    <>
+      <p className="role-meta">
+        {role.dates} · {role.location}
+      </p>
+      {role.highlights.length ? (
+        <ul className="role-points">
+          {role.highlights.map((h) => (
+            <li key={h}>{h}</li>
+          ))}
+        </ul>
+      ) : null}
+      {work.length ? (
+        <div className="role-projects">
+          <p className="role-projects-label">Projects</p>
+          <ul>
+            {work.map((p) => (
+              <li key={p.slug}>
+                <Link to={`/projects/${p.slug}`}>
+                  {p.client === p.title || role.org.startsWith(p.client)
+                    ? p.title
+                    : `${p.title} · ${p.client}`}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+/** Roles with no extra CV detail render as plain cards (no toggle). */
+const hasDetails = (r: Role) =>
+  r.highlights.length > 0 || projects.some((p) => p.company === r.org);
+
+type Accordion = { openOrg: string | null; toggle: (org: string) => void };
+
+const roleItem = (r: Role, { openOrg, toggle }: Accordion) => (
+  <TimelineItem
+    org={`${r.org} · ${r.period}`}
+    title={r.title}
+    active={r.current}
+    details={hasDetails(r) ? <RoleDetails role={r} /> : undefined}
+    open={openOrg === r.org}
+    onToggle={() => toggle(r.org)}
+  >
     {r.summary}
   </TimelineItem>
 );
 
 export function Experience() {
   const compact = useIsCompact();
+  // Accordion: one role open at a time; clicking the open one closes it.
+  const [openOrg, setOpenOrg] = useState<string | null>(null);
+  const acc: Accordion = {
+    openOrg,
+    toggle: (org) => setOpenOrg((cur) => (cur === org ? null : org)),
+  };
   return (
     <section className="section bg-raised" id="experience" aria-labelledby="experience-title">
       <FloatingShape kind="diamond" at={{ right: '9%', top: 300 }} />
@@ -27,11 +83,11 @@ export function Experience() {
           <SectionHeading eyebrow="Career" title="My Experience" id="experience-title" />
         </div>
         {compact ? (
-          <StraightRail />
+          <StraightRail acc={acc} />
         ) : (
           <CurvedRail
             rows={[
-              ...roles.map((r) => ({ key: r.org, node: <Reveal>{roleItem(r)}</Reveal> })),
+              ...roles.map((r) => ({ key: r.org, node: <Reveal>{roleItem(r, acc)}</Reveal> })),
               {
                 key: 'education',
                 node: (
@@ -49,7 +105,7 @@ export function Experience() {
 }
 
 /** Mobile: a straight line, the three most recent roles, and a Disclosure for the rest. */
-function StraightRail() {
+function StraightRail({ acc }: { acc: Accordion }) {
   const reduced = usePrefersReducedMotion();
   const recent = roles.slice(0, RECENT_ROLE_COUNT);
   const earlier = roles.slice(RECENT_ROLE_COUNT);
@@ -60,7 +116,7 @@ function StraightRail() {
         <m.span layout className="tl-line" aria-hidden="true" />
         <ol className="tl-stack">
           {recent.map((r) => (
-            <li key={r.org}>{roleItem(r)}</li>
+            <li key={r.org}>{roleItem(r, acc)}</li>
           ))}
         </ol>
         <Disclosure
@@ -88,7 +144,7 @@ function StraightRail() {
                   show: { opacity: 1, y: 0, transition: { duration: reduced ? 0 : 0.25 } },
                 }}
               >
-                {roleItem(r)}
+                {roleItem(r, acc)}
               </m.li>
             ))}
           </m.ol>
