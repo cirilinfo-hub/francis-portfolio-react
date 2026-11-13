@@ -10,7 +10,7 @@
   from { translate: 0 0; }
   to { translate: 6px -10px; }
 }
-.deco { position: absolute; pointer-events: none; z-index: 0; animation: fc-drift 9s ease-in-out infinite alternate; }
+.deco { animation: fc-drift 9s ease-in-out infinite alternate; }
 .deco.slow { animation-duration: 13s; }
 .deco.mid { animation-duration: 11s; }
 
@@ -24,6 +24,22 @@
     animation: fc-reveal linear both;
     animation-timeline: view();
     animation-range: entry 0% entry 70%;
+  }
+}
+
+/* ---------- CurvedRail line draws in as Experience scrolls ---------- */
+@keyframes fc-draw {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+@supports (animation-timeline: view()) {
+  .tl-wrap { view-timeline: --tl block; }
+  .tl-reveal {
+    transform-box: fill-box;
+    transform-origin: 50% 0%;
+    animation: fc-draw linear both;
+    animation-timeline: --tl;
+    animation-range: entry 10% cover 65%;
   }
 }
 
@@ -69,6 +85,7 @@ html.theme-vt::view-transition-new(root) { z-index: 2; }
   .deco { animation: none; }
   .sd-reveal { animation: none !important; opacity: 1; transform: none; }
   .scroll-progress.is-native { animation: none; }
+  .tl-reveal { animation: none !important; transform: none; }
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) {

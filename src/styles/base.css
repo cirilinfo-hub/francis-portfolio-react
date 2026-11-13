@@ -54,9 +54,10 @@ button { font: inherit; }
   display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-5);
   border-radius: var(--radius-pill); background: var(--surface-raised); color: var(--ink);
   box-shadow: var(--shadow-card); font-size: 13px; font-weight: 600; text-decoration: none;
-  transform: translateY(-160%);
+  transform: translateY(-200%);
+  box-shadow: none;
 }
-.skip-link:focus-visible { transform: none; }
+.skip-link:focus-visible { transform: none; box-shadow: var(--shadow-card); }
 
 /* Placeholder label (content still to be supplied) */
 .quote-ph { display: inline-flex; align-items: center; gap: var(--space-2); padding: 2px var(--space-3); border-radius: var(--radius-md); background: var(--sun-soft); color: var(--sun); font-size: 12px; line-height: 20px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
