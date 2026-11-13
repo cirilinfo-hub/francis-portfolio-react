@@ -1,0 +1,1 @@
+import{l as e}from"./utils-Djmoxmbd.js";import{n as t,r as n}from"./app-CJRO4CwS.js";function r({params:r}){let i=t(r.slug);if(!i)throw e(null,{status:404,statusText:`Project not found`});let a=n.indexOf(i);return{project:i,prev:n[(a-1+n.length)%n.length]??i,next:n[(a+1)%n.length]??i}}export{r as loader};
