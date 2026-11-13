@@ -1,0 +1,7 @@
+dist
+coverage
+playwright-report
+test-results
+src/styles/tokens.css
+design-source
+package-lock.json

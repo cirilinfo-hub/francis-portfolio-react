@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Francis Ciril Arulsamy — Front-End Architect</title>
+    <meta
+      name="description"
+      content="Francis Ciril Arulsamy, Front-End Architect in Bangalore. 18+ years designing scalable front-end architectures, UI design systems and reusable components in Angular, React and TypeScript."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f4f5fb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#12132a" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Francis Ciril Arulsamy" />
+    <meta property="og:title" content="Francis Ciril Arulsamy — Front-End Architect" />
+    <meta
+      property="og:description"
+      content="18+ years designing scalable front-end architectures, UI design systems and reusable components in Angular, React and TypeScript."
+    />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta property="og:image" content="%VITE_SITE_URL%/img/hero-920.webp" />
+    <meta property="og:image:alt" content="Francis Ciril Arulsamy in a blue checked shirt" />
+    <meta property="profile:first_name" content="Francis Ciril" />
+    <meta property="profile:last_name" content="Arulsamy" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Apply the saved theme before first paint so there is no flash. -->
+    <script>
+      try {
+        var t = localStorage.getItem('fc-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+
+    <!-- Above-the-fold weights only: 400 body, 500 nav, 600 labels, 700 role line. -->
+    <link rel="preload" href="/fonts/poppins-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/poppins-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/poppins-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/poppins-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- LCP: hero portrait. -->
+    <link
+      rel="preload"
+      as="image"
+      href="/img/hero-920.webp"
+      imagesrcset="/img/hero-460.webp 460w, /img/hero-920.webp 920w"
+      imagesizes="(max-width: 640px) 300px, (max-width: 1024px) 400px, 460px"
+      fetchpriority="high"
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Francis Ciril Arulsamy",
+        "jobTitle": "Front-End Architect",
+        "description": "Front-end architect with 18+ years designing scalable front-end architectures, UI design systems and reusable components in Angular, React and TypeScript.",
+        "url": "%VITE_SITE_URL%/",
+        "image": "%VITE_SITE_URL%/img/hero-920.webp",
+        "email": "mailto:francis_jeni@yahoo.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Bangalore", "addressCountry": "IN" },
+        "knowsLanguage": ["English", "Tamil", "Malayalam", "Kannada"],
+        "knowsAbout": ["Angular", "React", "TypeScript", "Design systems", "Web accessibility", "Front-end performance"],
+        "worksFor": { "@type": "Organization", "name": "Eurofins IT Solutions" },
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "Yadava College, Madurai (Madurai Kamaraj University)" }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

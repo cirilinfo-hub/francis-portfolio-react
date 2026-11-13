@@ -1,0 +1,80 @@
+/* Motion layer. Only transform and opacity animate (plus the theme reveal's
+   clip-path on the view-transition snapshot; see README).
+
+   Reduced motion is handled in one place: the media query at the bottom of
+   this file, plus usePrefersReducedMotion() / <MotionConfig reducedMotion="user">
+   for anything driven from JS. */
+
+/* ---------- Floating shapes: the only looping animation ---------- */
+@keyframes fc-drift {
+  from { translate: 0 0; }
+  to { translate: 6px -10px; }
+}
+.deco { position: absolute; pointer-events: none; z-index: 0; animation: fc-drift 9s ease-in-out infinite alternate; }
+.deco.slow { animation-duration: 13s; }
+.deco.mid { animation-duration: 11s; }
+
+/* ---------- Scroll-driven reveal (native), JS fallback in <Reveal> ---------- */
+@keyframes fc-reveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@supports (animation-timeline: view()) {
+  .sd-reveal {
+    animation: fc-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+}
+
+/* ---------- Nav scroll progress (native), JS fallback in <ScrollProgress> ---------- */
+@keyframes fc-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.scroll-progress {
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: var(--violet-ink); transform-origin: 0 50%; transform: scaleX(0);
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress.is-native {
+    animation: fc-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+/* ---------- Route cross-fade + shared element (React <ViewTransition>) ---------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: ease;
+}
+::view-transition-group(*) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Theme switch: the circular reveal is driven from JS; the old snapshot stays put. */
+html.theme-vt::view-transition-old(root),
+html.theme-vt::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+html.theme-vt::view-transition-new(root) { z-index: 2; }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .deco { animation: none; }
+  .sd-reveal { animation: none !important; opacity: 1; transform: none; }
+  .scroll-progress.is-native { animation: none; }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+  /* Hover colour changes stay; hover movement goes. */
+  .fc-btn-primary:hover,
+  .pv-card:hover { transform: none; }
+}
