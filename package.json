@@ -9,6 +9,7 @@
     "prebuild": "node scripts/build-tokens.mjs",
     "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist/.server && node scripts/prerender.mjs",
     "preview": "vite preview",
+    "deploy": "node scripts/deploy.mjs",
     "tokens": "node scripts/build-tokens.mjs",
     "typecheck": "tsc -b",
     "lint": "eslint .",

@@ -201,6 +201,18 @@ Inline validation runs on blur and re-checks while a field shows an error. **Bac
 - **Coral on coral-soft.** In the light theme this pair is 4.49:1, just under AA 4.5:1 for small text (it shows in the testimonial avatar initials). A coral one step darker, e.g. `#c92b53`, would clear it.
 - **Trust strip wrapping.** When it wraps on mobile, a line can start with a separator dot. Separators could be hidden at line starts, or the list allowed to scroll horizontally.
 
+## Deploying
+
+The site is hosted on Hostinger at https://francisciril.com as a static site.
+
+1. Commit your changes on `main` and push.
+2. Run `npm run deploy`. It builds, then force-pushes the contents of `dist/` to the `deploy` branch.
+3. Hostinger auto-deploys the `deploy` branch into `public_html` on every push.
+
+`public/.htaccess` maps clean URLs (`/projects/gma` → `projects/gma.html`), serves `404.html`,
+redirects http and www to `https://francisciril.com`, and sets long cache headers on hashed assets.
+`VITE_SITE_URL` in `.env` sets the canonical, Open Graph and JSON-LD URLs.
+
 ## Open items
 
 Carried over from Spec.dc.html:
@@ -212,7 +224,6 @@ Carried over from Spec.dc.html:
 Added during the build:
 
 - **Testimonial:** placeholder only (quote, name and candid photo). Paste a real recommendation into `src/data/site.ts` and set `placeholder: false`.
-- **Site URL:** `VITE_SITE_URL` in `.env` is a placeholder (`https://francisciril.example`). It feeds canonical, Open Graph and JSON-LD URLs.
 - **Project screenshots and outcomes:** all screenshots are flat placeholders. GMA's Impact still needs a measured outcome.
 - **Hosting:** serve `dist/projects/<slug>.html` at `/projects/<slug>` (vite preview, Netlify, Vercel and Cloudflare Pages do by default) and `dist/404.html` for unknown URLs.
 - **Tooling advisory:** `npm audit` reports a moderate minimatch advisory inside typescript-eslint. It is dev-only and does not ship.
