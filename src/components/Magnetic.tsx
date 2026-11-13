@@ -29,7 +29,12 @@ export function Magnetic({ children }: { children: ReactNode }) {
   };
 
   return (
-    <m.span className="fc-btn-magnetic" style={{ x, y }} onPointerMove={onMove} onPointerLeave={reset}>
+    <m.span
+      className="fc-btn-magnetic"
+      style={{ x, y }}
+      onPointerMove={onMove}
+      onPointerLeave={reset}
+    >
       {children}
     </m.span>
   );

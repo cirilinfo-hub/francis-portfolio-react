@@ -57,8 +57,14 @@ export function Projects() {
       <FloatingShape kind="diamond" at={{ left: '4%', top: 380 }} />
       <FloatingShape kind="squiggle" at={{ right: '4%', top: 140 }} />
       <div className="wrap">
-        <SectionHeading eyebrow="Portfolios" title="Latest Projects" align="left" id="projects-title">
-          19 front-end projects for Eurofins, Cisco, Intel, Visa, Experian and more, from 2011 to 2026.
+        <SectionHeading
+          eyebrow="Portfolios"
+          title="Latest Projects"
+          align="left"
+          id="projects-title"
+        >
+          19 front-end projects for Eurofins, Cisco, Intel, Visa, Experian and more, from 2011 to
+          2026.
         </SectionHeading>
 
         <ul className="pv-tiles" aria-label="Project summary">
@@ -132,7 +138,9 @@ export function Projects() {
 
           <div className="pv-results" data-stale={isStale || undefined}>
             {total === 0 ? (
-              <p className="pv-empty">No projects match that search. Try another name, client or technology.</p>
+              <p className="pv-empty">
+                No projects match that search. Try another name, client or technology.
+              </p>
             ) : view === 'card' ? (
               <m.div
                 key={`${fw}-${current}-${perPage}`}
@@ -197,7 +205,12 @@ export function Projects() {
 
           <div className="pv-foot">
             <div className="pv-pages" role="group" aria-label="Project pages">
-              <button className="pv-page" type="button" disabled={current <= 1} onClick={() => go(current - 1)}>
+              <button
+                className="pv-page"
+                type="button"
+                disabled={current <= 1}
+                onClick={() => go(current - 1)}
+              >
                 <Icon name="chevronLeft" />
                 Previous
               </button>

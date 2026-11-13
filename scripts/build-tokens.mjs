@@ -38,7 +38,8 @@ for (const [name, value] of Object.entries(EXTENSIONS)) themed.push([name, value
 const decl = (mode) => themed.map(([name, v]) => `  --${name}: ${v[mode]};`).join('\n');
 
 const statics = [];
-for (const [fam, stack] of Object.entries(tokens.type.families)) statics.push(`  --font-${fam}: ${stack};`);
+for (const [fam, stack] of Object.entries(tokens.type.families))
+  statics.push(`  --font-${fam}: ${stack};`);
 for (const group of tokens.type.groups) {
   for (const s of group.styles) {
     statics.push(`  --type-${s.name}-size: ${s.fontSize};`);

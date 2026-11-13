@@ -9,7 +9,11 @@ export function About() {
     <section className="section bg-raised about" id="about" aria-labelledby="about-title">
       <FloatingShape kind="diamond" at={{ right: '7%', top: 120 }} />
       <FloatingShape kind="triangle-sm" speed="slow" at={{ left: '4%', bottom: 140 }} />
-      <FloatingShape kind="squiggle" at={{ left: '44%', top: 80 }} size={{ width: 44, height: 22 }} />
+      <FloatingShape
+        kind="squiggle"
+        at={{ left: '44%', top: 80 }}
+        size={{ width: 44, height: 22 }}
+      />
       <div className="wrap">
         <div className="split">
           <div className="col-5 portrait-col">

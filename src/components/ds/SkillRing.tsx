@@ -28,7 +28,15 @@ export interface SkillRingProps {
  * uses stroke-dashoffset (paint only, 56px box), the one non-transform property
  * animated on the page besides the theme reveal; see README.
  */
-export function SkillRing({ label, display, years, outOf, span, tone = 'coral', className }: SkillRingProps) {
+export function SkillRing({
+  label,
+  display,
+  years,
+  outOf,
+  span,
+  tone = 'coral',
+  className,
+}: SkillRingProps) {
   const ref = useRef<HTMLDivElement>(null);
   const barRef = useRef<SVGCircleElement>(null);
   const numRef = useRef<HTMLSpanElement>(null);

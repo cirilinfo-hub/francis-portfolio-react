@@ -116,7 +116,12 @@ export function ScreenshotPlaceholder({
   style?: CSSProperties;
 }) {
   return (
-    <div className={['shot', className].filter(Boolean).join(' ')} role="img" aria-label={label} style={style}>
+    <div
+      className={['shot', className].filter(Boolean).join(' ')}
+      role="img"
+      aria-label={label}
+      style={style}
+    >
       <div className="shot-side">
         <i />
         <i />

@@ -7,17 +7,81 @@
 
 /* ---------- Floating shapes: the only looping animation ---------- */
 @keyframes fc-drift {
-  from { translate: 0 0; }
-  to { translate: 6px -10px; }
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 6px -10px;
+  }
 }
-.deco { animation: fc-drift 9s ease-in-out infinite alternate; }
-.deco.slow { animation-duration: 13s; }
-.deco.mid { animation-duration: 11s; }
+.deco {
+  animation: fc-drift 9s ease-in-out infinite alternate;
+}
+.deco.slow {
+  animation-duration: 13s;
+}
+.deco.mid {
+  animation-duration: 11s;
+}
+
+/* ---------- Hero entrance on prerendered pages (no JS needed) ----------
+   Same choreography as the Motion variants in Hero.tsx. The role line and the
+   portrait are LCP candidates, so they move but never start transparent. */
+@keyframes fc-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes fc-settle {
+  from {
+    transform: translateY(16px);
+  }
+}
+@keyframes fc-word {
+  from {
+    opacity: 0.18;
+    transform: translateY(0.35em);
+  }
+}
+.hero-css-in .greet {
+  animation: fc-rise 0.35s cubic-bezier(0.2, 0, 0, 1) 0.05s both;
+}
+.hero-css-in .split-inner {
+  animation: fc-word 0.45s cubic-bezier(0.2, 0, 0, 1) both;
+}
+.hero-css-in .split-word:nth-child(1) .split-inner {
+  animation-delay: 0.13s;
+}
+.hero-css-in .split-word:nth-child(2) .split-inner {
+  animation-delay: 0.19s;
+}
+.hero-css-in .split-word:nth-child(3) .split-inner {
+  animation-delay: 0.25s;
+}
+.hero-css-in .hero-intro {
+  animation: fc-rise 0.35s cubic-bezier(0.2, 0, 0, 1) 0.21s both;
+}
+.hero-css-in .hero-copy > div:last-child {
+  animation: fc-rise 0.35s cubic-bezier(0.2, 0, 0, 1) 0.29s both;
+}
+.hero-css-in .hero-photo {
+  animation: fc-settle 0.6s cubic-bezier(0.2, 0, 0, 1) 0.05s both;
+}
+.hero-css-in .hero-social {
+  animation: fc-rise 0.35s cubic-bezier(0.2, 0, 0, 1) 0.37s both;
+}
 
 /* ---------- Scroll-driven reveal (native), JS fallback in <Reveal> ---------- */
+/* Transform only: content is never semi-transparent, so text keeps full
+   contrast even when it sits half-way through its reveal at the fold. */
 @keyframes fc-reveal {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: none; }
+  from {
+    transform: translateY(24px);
+  }
+  to {
+    transform: none;
+  }
 }
 @supports (animation-timeline: view()) {
   .sd-reveal {
@@ -29,11 +93,17 @@
 
 /* ---------- CurvedRail line draws in as Experience scrolls ---------- */
 @keyframes fc-draw {
-  from { transform: scaleY(0); }
-  to { transform: scaleY(1); }
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
 }
 @supports (animation-timeline: view()) {
-  .tl-wrap { view-timeline: --tl block; }
+  .tl-wrap {
+    view-timeline: --tl block;
+  }
   .tl-reveal {
     transform-box: fill-box;
     transform-origin: 50% 0%;
@@ -45,12 +115,22 @@
 
 /* ---------- Nav scroll progress (native), JS fallback in <ScrollProgress> ---------- */
 @keyframes fc-progress {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 .scroll-progress {
-  position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
-  background: var(--violet-ink); transform-origin: 0 50%; transform: scaleX(0);
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--violet-ink);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
   pointer-events: none;
 }
 @supports (animation-timeline: scroll()) {
@@ -77,21 +157,49 @@ html.theme-vt::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
 }
-html.theme-vt::view-transition-new(root) { z-index: 2; }
+html.theme-vt::view-transition-new(root) {
+  z-index: 2;
+}
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .deco { animation: none; }
-  .sd-reveal { animation: none !important; opacity: 1; transform: none; }
-  .scroll-progress.is-native { animation: none; }
-  .tl-reveal { animation: none !important; transform: none; }
+  html {
+    scroll-behavior: auto;
+  }
+  .deco {
+    animation: none;
+  }
+  .sd-reveal {
+    animation: none !important;
+    transform: none;
+  }
+  .scroll-progress.is-native {
+    animation: none;
+  }
+  .tl-reveal {
+    animation: none !important;
+    transform: none;
+  }
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
   }
+  .hero-css-in * {
+    animation: none !important;
+  }
+  /* Prerendered Motion start states (inline opacity/transform) resolve instantly:
+     headings appear without the fade, cards and shapes sit still. */
+  .fc-heading,
+  .svc-grid > li,
+  .pv-grid > .pv-card,
+  .hero [style] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
   /* Hover colour changes stay; hover movement goes. */
   .fc-btn-primary:hover,
-  .pv-card:hover { transform: none; }
+  .pv-card:hover {
+    transform: none;
+  }
 }

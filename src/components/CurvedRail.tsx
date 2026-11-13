@@ -1,7 +1,7 @@
 import { m, useScroll, useTransform } from 'motion/react';
 import { useId, useRef, type ReactNode } from 'react';
 import { usePrefersReducedMotion } from '../hooks/useMediaQuery';
-import { supportsViewTimeline } from '../lib/supports';
+import { useNativeViewTimeline } from '../lib/supports';
 
 const ROW = 152;
 const GAP = 20;
@@ -17,7 +17,10 @@ function curve(h: number) {
     [120, h],
   ] as const;
   const at = (t: number, i: 0 | 1) =>
-    (1 - t) ** 3 * pts[0][i] + 3 * (1 - t) ** 2 * t * pts[1][i] + 3 * (1 - t) * t * t * pts[2][i] + t ** 3 * pts[3][i];
+    (1 - t) ** 3 * pts[0][i] +
+    3 * (1 - t) ** 2 * t * pts[1][i] +
+    3 * (1 - t) * t * t * pts[2][i] +
+    t ** 3 * pts[3][i];
   const xAtY = (y: number) => {
     let lo = 0;
     let hi = 1;
@@ -48,17 +51,29 @@ export function CurvedRail({ rows }: CurvedRailProps) {
   const reduced = usePrefersReducedMotion();
   const h = rows.length * ROW + (rows.length - 1) * GAP;
   const { d, xAtY } = curve(h);
-  const jsFallback = !supportsViewTimeline && !reduced;
+  const jsFallback = !useNativeViewTimeline() && !reduced;
 
   return (
     <div className="tl-wrap" ref={ref}>
-      <svg className="tl-curve" viewBox={`0 0 200 ${h}`} preserveAspectRatio="none" aria-hidden="true">
+      <svg
+        className="tl-curve"
+        viewBox={`0 0 200 ${h}`}
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
         <defs>
           <mask id={maskId} maskUnits="userSpaceOnUse" x="-40" y="0" width="280" height={h}>
             {jsFallback ? (
               <FallbackRevealRect target={ref} h={h} />
             ) : (
-              <rect className={reduced ? undefined : 'tl-reveal'} x="-40" y="0" width="280" height={h} fill="white" />
+              <rect
+                className={reduced ? undefined : 'tl-reveal'}
+                x="-40"
+                y="0"
+                width="280"
+                height={h}
+                fill="white"
+              />
             )}
           </mask>
         </defs>
@@ -68,7 +83,11 @@ export function CurvedRail({ rows }: CurvedRailProps) {
         {rows.map((r, i) => {
           const y = i * (ROW + GAP) + ROW / 2;
           return (
-            <li key={r.key} className="tl-row" style={{ paddingLeft: Math.round(xAtY(y) - NODE_CENTER) }}>
+            <li
+              key={r.key}
+              className="tl-row"
+              style={{ paddingLeft: Math.round(xAtY(y) - NODE_CENTER) }}
+            >
               {r.node}
             </li>
           );
@@ -78,7 +97,13 @@ export function CurvedRail({ rows }: CurvedRailProps) {
   );
 }
 
-function FallbackRevealRect({ target, h }: { target: React.RefObject<HTMLDivElement | null>; h: number }) {
+function FallbackRevealRect({
+  target,
+  h,
+}: {
+  target: React.RefObject<HTMLDivElement | null>;
+  h: number;
+}) {
   const { scrollYProgress } = useScroll({ target, offset: ['start 85%', 'end 60%'] });
   const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
   return (

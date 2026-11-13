@@ -7,7 +7,7 @@
     "predev": "node scripts/build-tokens.mjs",
     "dev": "vite",
     "prebuild": "node scripts/build-tokens.mjs",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist/.server && node scripts/prerender.mjs",
     "preview": "vite preview",
     "tokens": "node scripts/build-tokens.mjs",
     "typecheck": "tsc -b",

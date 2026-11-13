@@ -10,11 +10,23 @@ interface Common {
 }
 
 type AsButton = Common &
-  ButtonHTMLAttributes<HTMLButtonElement> & { href?: undefined; to?: undefined; ref?: Ref<HTMLButtonElement> };
+  ButtonHTMLAttributes<HTMLButtonElement> & {
+    href?: undefined;
+    to?: undefined;
+    ref?: Ref<HTMLButtonElement>;
+  };
 type AsAnchor = Common &
-  AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; to?: undefined; ref?: Ref<HTMLAnchorElement> };
+  AnchorHTMLAttributes<HTMLAnchorElement> & {
+    href: string;
+    to?: undefined;
+    ref?: Ref<HTMLAnchorElement>;
+  };
 type AsLink = Common &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & { to: string; href?: undefined; ref?: Ref<HTMLAnchorElement> };
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {
+    to: string;
+    href?: undefined;
+    ref?: Ref<HTMLAnchorElement>;
+  };
 
 export type ButtonProps = AsButton | AsAnchor | AsLink;
 

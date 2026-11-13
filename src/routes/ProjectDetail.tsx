@@ -8,7 +8,6 @@ import { Reveal } from '../components/Reveal';
 import { PlaceholderNote, ScreenshotPlaceholder, TagList } from '../components/Small';
 import type { Tone } from '../components/ds/types';
 import type { loader } from './projectDetailLoader';
-import './project-detail.css';
 
 /** Numbered section with an icon chip: Overview, My Role, Stack, Impact. */
 function NumberedBlock({
@@ -54,7 +53,10 @@ export default function ProjectDetail() {
       <title>{`${p.title} — Francis Ciril Arulsamy`}</title>
       <meta
         name="description"
-        content={cs?.lede ?? `${p.title}: a ${p.framework} project for ${p.client}, delivered with ${p.company}.`}
+        content={
+          cs?.lede ??
+          `${p.title}: a ${p.framework} project for ${p.client}, delivered with ${p.company}.`
+        }
       />
 
       <section className="pd-hero">
@@ -115,20 +117,22 @@ export default function ProjectDetail() {
                 <div className="pd-pending">
                   <PlaceholderNote>Case Study To Be Written</PlaceholderNote>
                   <p className="t-body">
-                    The overview, role, stack and impact write-up for this project has not been supplied yet. The
-                    facts on the right come from the project list.
+                    The overview, role, stack and impact write-up for this project has not been
+                    supplied yet. The facts on the right come from the project list.
                   </p>
                 </div>
               )}
             </div>
             <aside className="col-4" aria-label="Project facts">
               <dl className="facts-card panel">
-                {(cs?.facts ?? [
-                  { label: 'Client', value: p.client },
-                  { label: 'Company', value: p.company },
-                  { label: 'Period', value: p.period },
-                  { label: 'Framework', value: p.framework },
-                ]).map((f) => (
+                {(
+                  cs?.facts ?? [
+                    { label: 'Client', value: p.client },
+                    { label: 'Company', value: p.company },
+                    { label: 'Period', value: p.period },
+                    { label: 'Framework', value: p.framework },
+                  ]
+                ).map((f) => (
                   <div key={f.label}>
                     <dt>{f.label}</dt>
                     <dd>{f.value}</dd>
@@ -155,7 +159,10 @@ export default function ProjectDetail() {
             <div className="pd-more-grid">
               {cs.screenshots.map((s, i) => (
                 <figure key={s.alt} className="pd-fig">
-                  <ScreenshotPlaceholder label={s.alt} bars={i % 2 ? [65, 35, 75, 50] : [40, 70, 55, 30]} />
+                  <ScreenshotPlaceholder
+                    label={s.alt}
+                    bars={i % 2 ? [65, 35, 75, 50] : [40, 70, 55, 30]}
+                  />
                   <figcaption className="t-small">{s.caption}</figcaption>
                 </figure>
               ))}

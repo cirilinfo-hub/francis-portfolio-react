@@ -9,7 +9,13 @@ export interface ServiceItemProps {
   className?: string;
 }
 
-export function ServiceItem({ icon, tone = 'violet', title, children, className }: ServiceItemProps) {
+export function ServiceItem({
+  icon,
+  tone = 'violet',
+  title,
+  children,
+  className,
+}: ServiceItemProps) {
   return (
     <div className={['fc-service', className].filter(Boolean).join(' ')}>
       <span className={`fc-chip fc-chip-${tone}`} aria-hidden="true">

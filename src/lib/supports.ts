@@ -1,6 +1,25 @@
-/** Native scroll-driven animations (CSS animation-timeline). Checked once. */
-export const supportsViewTimeline =
-  typeof CSS !== 'undefined' && CSS.supports('animation-timeline: view()');
+import { useSyncExternalStore } from 'react';
 
-export const supportsScrollTimeline =
-  typeof CSS !== 'undefined' && CSS.supports('animation-timeline: scroll()');
+const noop = () => () => {};
+const check = (q: string) => typeof CSS !== 'undefined' && CSS.supports(q);
+
+/**
+ * Native scroll-driven animations (CSS animation-timeline).
+ * Prerendered HTML assumes support (current Chrome, Edge and Safari), so
+ * hydration matches; browsers without it switch to the JS fallback right after.
+ */
+export function useNativeViewTimeline(): boolean {
+  return useSyncExternalStore(
+    noop,
+    () => check('animation-timeline: view()'),
+    () => true,
+  );
+}
+
+export function useNativeScrollTimeline(): boolean {
+  return useSyncExternalStore(
+    noop,
+    () => check('animation-timeline: scroll()'),
+    () => true,
+  );
+}

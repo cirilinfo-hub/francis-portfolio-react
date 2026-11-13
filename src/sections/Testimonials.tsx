@@ -33,7 +33,11 @@ export function Testimonials() {
                 <span className="ph-short">Placeholder Quote</span>
               </PlaceholderNote>
             ) : null}
-            <TestimonialCard name={testimonial.name} role={testimonial.role} initials={testimonial.initials}>
+            <TestimonialCard
+              name={testimonial.name}
+              role={testimonial.role}
+              initials={testimonial.initials}
+            >
               {testimonial.quote}
             </TestimonialCard>
           </div>

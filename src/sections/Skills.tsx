@@ -13,7 +13,12 @@ export function Skills() {
       <div className="wrap">
         <div className="split skills-split">
           <div className="col-7 skills-copy">
-            <SectionHeading eyebrow="Expertise" title="Special Skills" align="left" id="skills-title" />
+            <SectionHeading
+              eyebrow="Expertise"
+              title="Special Skills"
+              align="left"
+              id="skills-title"
+            />
             <div className="rings">
               {rings.map((r) => (
                 <SkillRing

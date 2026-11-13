@@ -1,5 +1,5 @@
 import { LazyMotion, MotionConfig } from 'motion/react';
-import { ViewTransition } from 'react';
+import { useEffect, ViewTransition } from 'react';
 import { Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { Footer } from '../components/Footer';
 import { NavBar } from '../components/NavBar';
@@ -17,6 +17,11 @@ const loadFeatures = () => import('../lib/motionFeatures').then((mod) => mod.def
 export function RootLayout() {
   const { pathname } = useLocation();
   const onProject = pathname.startsWith('/projects/');
+
+  // Signals that React has hydrated (used by the e2e tests and handy for debugging).
+  useEffect(() => {
+    document.documentElement.dataset.ready = 'true';
+  }, []);
 
   return (
     <MotionConfig reducedMotion="user">

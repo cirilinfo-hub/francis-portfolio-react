@@ -26,10 +26,23 @@ export function Experience() {
         <div className="gap-head">
           <SectionHeading eyebrow="Career" title="My Experience" id="experience-title" />
         </div>
-        {compact ? <StraightRail /> : <CurvedRail rows={[
-          ...roles.map((r) => ({ key: r.org, node: <Reveal>{roleItem(r)}</Reveal> })),
-          { key: 'education', node: <Reveal><EducationCard item={education} /></Reveal> },
-        ]} />}
+        {compact ? (
+          <StraightRail />
+        ) : (
+          <CurvedRail
+            rows={[
+              ...roles.map((r) => ({ key: r.org, node: <Reveal>{roleItem(r)}</Reveal> })),
+              {
+                key: 'education',
+                node: (
+                  <Reveal>
+                    <EducationCard item={education} />
+                  </Reveal>
+                ),
+              },
+            ]}
+          />
+        )}
       </div>
     </section>
   );

@@ -69,7 +69,11 @@ export function setTheme(theme: Theme, origin?: { x: number; y: number }) {
     .then(() =>
       root.animate(
         { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
-        { duration: 420, easing: 'cubic-bezier(0.2, 0, 0, 1)', pseudoElement: '::view-transition-new(root)' },
+        {
+          duration: 420,
+          easing: 'cubic-bezier(0.2, 0, 0, 1)',
+          pseudoElement: '::view-transition-new(root)',
+        },
       ),
     )
     .catch(() => {});
