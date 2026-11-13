@@ -42,7 +42,13 @@ export function Contact() {
                 ) : null}
                 {linkedIn ? (
                   <li>
-                    <a className="cchip" href={linkedIn.href} aria-label="LinkedIn profile">
+                    <a
+                      className="cchip"
+                      href={linkedIn.href}
+                      aria-label="LinkedIn profile"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <span aria-hidden="true">in</span>
                     </a>
                     LinkedIn

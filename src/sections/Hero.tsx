@@ -123,7 +123,7 @@ export function Hero() {
                     Hire Me
                   </Button>
                 </Magnetic>
-                <Button variant="outline" href={person.cvHref}>
+                <Button variant="outline" href={person.cvHref} download>
                   Get CV
                 </Button>
               </ButtonTray>

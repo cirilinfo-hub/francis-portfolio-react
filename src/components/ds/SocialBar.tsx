@@ -17,7 +17,13 @@ export function SocialBar({ items, label = 'Social profiles', className }: Socia
     <ul className={['fc-social', className].filter(Boolean).join(' ')} aria-label={label}>
       {items.map((it) => (
         <li key={it.label}>
-          <a className="fc-social-btn" href={it.href} aria-label={it.label} title={it.label}>
+          <a
+            className="fc-social-btn"
+            href={it.href}
+            aria-label={it.label}
+            title={it.label}
+            {...(it.href.startsWith('http') && { target: '_blank', rel: 'noopener noreferrer' })}
+          >
             <span aria-hidden="true">{it.short}</span>
           </a>
         </li>

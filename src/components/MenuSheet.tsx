@@ -88,7 +88,7 @@ export function MenuSheet({ onClose, hrefFor, current, returnFocusTo }: MenuShee
           <Button variant="primary" href={hrefFor('contact')} onClick={onClose}>
             Hire Me
           </Button>
-          <Button variant="outline" href={person.cvHref}>
+          <Button variant="outline" href={person.cvHref} download>
             Get CV
           </Button>
         </div>

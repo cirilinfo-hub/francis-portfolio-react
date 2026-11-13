@@ -206,14 +206,12 @@ Inline validation runs on blur and re-checks while a field shows an error. **Bac
 Carried over from Spec.dc.html:
 
 - **Skill years:** Angular 9, TypeScript 10, React 6, HTML/CSS 18+ come from CV project dates. Francis to confirm (`src/data/skills.ts`).
-- **Social links:** LinkedIn and GitHub URLs are placeholders (`#linkedin`, `#github` in `src/data/site.ts`).
 - **Phone:** hidden (`person.phone = null`) until Francis confirms it can be public. Setting it shows the phone row in Contact.
 - **Danger token:** the system has no danger token, so errors use coral with a 2 px edge, an icon and text. Proposed: add a separate `danger` token.
 
 Added during the build:
 
 - **Testimonial:** placeholder only (quote, name and candid photo). Paste a real recommendation into `src/data/site.ts` and set `placeholder: false`.
-- **CV link:** "Get CV" points to `#cv`; no CV file was supplied.
 - **Site URL:** `VITE_SITE_URL` in `.env` is a placeholder (`https://francisciril.example`). It feeds canonical, Open Graph and JSON-LD URLs.
 - **Project screenshots and outcomes:** all screenshots are flat placeholders. GMA's Impact still needs a measured outcome.
 - **Hosting:** serve `dist/projects/<slug>.html` at `/projects/<slug>` (vite preview, Netlify, Vercel and Cloudflare Pages do by default) and `dist/404.html` for unknown URLs.

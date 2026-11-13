@@ -12,8 +12,8 @@ export const person = {
   email: 'francis_jeni@yahoo.com',
   /** PLACEHOLDER: hidden until Francis confirms the number can be public. */
   phone: null as string | null,
-  /** PLACEHOLDER: no CV file supplied yet. */
-  cvHref: '#cv',
+  /** PDF in public/; served from the site root. */
+  cvHref: '/Francis_Ciril_Arulsamy_CV.pdf',
 } as const;
 
 export interface SocialLink {
@@ -24,9 +24,8 @@ export interface SocialLink {
 }
 
 export const social: SocialLink[] = [
-  // PLACEHOLDER: the CV has neither a LinkedIn URL nor a GitHub profile.
-  { label: 'LinkedIn', short: 'in', href: '#linkedin', placeholder: true },
-  { label: 'GitHub', short: 'GH', href: '#github', placeholder: true },
+  { label: 'LinkedIn', short: 'in', href: 'https://www.linkedin.com/in/francis-ciril/' },
+  { label: 'GitHub', short: 'GH', href: 'https://github.com/cirilinfo-hub/' },
   { label: 'Email', short: '@', href: `mailto:${person.email}` },
 ];
 
