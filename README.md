@@ -167,7 +167,17 @@ Hover colour changes stay.
 - `useFormStatus` drives the Send button's pending state.
 - `useOptimistic` shows the confirmation immediately and rolls it back if the request fails.
 
-Inline validation runs on blur and re-checks while a field shows an error. **Backend hook:** replace the body of `submitContact()` in `src/lib/submitContact.ts`. It currently simulates a 700 ms request and succeeds.
+Inline validation runs on blur and re-checks while a field shows an error.
+
+**Delivery:** `src/lib/submitContact.ts` posts JSON to `public/api/contact.php`, which sends the message
+with PHP `mail()` on Hostinger:
+
+- **To:** `francis_jeni@yahoo.com`, **Cc:** `no-reply@francisciril.com` (constants at the top of the PHP file).
+- **From:** `no-reply@francisciril.com`, with the visitor in **Reply-To**, so replying goes to them.
+- Spam protection: a hidden honeypot field (`website`), 5 messages per IP per hour, and a same-site `Origin` check.
+- Length limits match `LIMITS` in `src/lib/validateContact.ts`.
+
+The Vite dev server cannot run PHP, so in development `submitContact()` simulates success.
 
 ---
 

@@ -60,6 +60,11 @@ export function ContactCard() {
       message: String(data.get('message') ?? ''),
     };
     setLive({});
+    // Honeypot: hidden from people, often filled by bots. Fake success, send nothing.
+    if (String(data.get('website') ?? '') !== '') {
+      setTouched({});
+      return { status: 'sent', errors: {}, values: EMPTY };
+    }
     const errors = validateContact(values);
     if (Object.keys(errors).length > 0) return { status: 'invalid', errors, values };
 
@@ -142,6 +147,12 @@ export function ContactCard() {
         onBlur={check('message')}
         onChange={recheck('message')}
       />
+      <div className="ccard-trap" aria-hidden="true">
+        <label>
+          Website
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
       <div className="ccard-foot">
         <span className="t-small">{contact.replyNote}</span>
         <SendButton />

@@ -4,18 +4,26 @@ export type Field = keyof ContactMessage;
 export type FieldErrors = Partial<Record<Field, string>>;
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+/** Same limits as public/api/contact.php. */
+export const LIMITS = { name: 100, email: 254, message: 5000 } as const;
 
 export function validateField(field: Field, value: string): string | undefined {
   const v = value.trim();
   switch (field) {
     case 'name':
-      return v ? undefined : 'Enter your name.';
+      if (!v) return 'Enter your name.';
+      return v.length > LIMITS.name ? `Keep your name under ${LIMITS.name} characters.` : undefined;
     case 'email':
       if (!v) return 'Enter your email address.';
-      return EMAIL.test(v) ? undefined : 'Enter a full email address, like name@company.com.';
+      return v.length <= LIMITS.email && EMAIL.test(v)
+        ? undefined
+        : 'Enter a full email address, like name@company.com.';
     case 'message':
       if (!v) return 'Tell me a little about your product and team.';
-      return v.length < 10 ? 'Add a little more detail, at least 10 characters.' : undefined;
+      if (v.length < 10) return 'Add a little more detail, at least 10 characters.';
+      return v.length > LIMITS.message
+        ? `Keep your message under ${LIMITS.message} characters.`
+        : undefined;
   }
 }
 
