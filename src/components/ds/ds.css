@@ -1,0 +1,80 @@
+/* francis-ciril design-system components (ported from ds/francisciril/components/bundle.css). */
+
+/* Button: every pressable thing is a pill */
+.fc-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); font: inherit; font-size: 13px; line-height: 20px; font-weight: 600; letter-spacing: .02em; border-radius: var(--radius-pill); border: 1.5px solid transparent; cursor: pointer; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease, color .15s ease; }
+.fc-btn-md { height: 44px; padding: 0 var(--space-6); min-width: 120px; }
+.fc-btn-sm { height: 34px; padding: 0 var(--space-5); min-width: 96px; font-size: 12px; position: relative; }
+/* 34px visual, 44px hit area (Spec: buttons are 44px targets). */
+.fc-btn-sm::after { content: ''; position: absolute; inset: -5px 0; }
+.fc-btn-primary { background: var(--coral); color: var(--on-coral); box-shadow: var(--shadow-coral); }
+.fc-btn-primary:hover { transform: translateY(-1px); color: var(--on-coral); }
+.fc-btn-outline { background: transparent; color: var(--coral); border-color: var(--coral); }
+.fc-btn-outline:hover { background: var(--coral-soft); color: var(--coral); }
+.fc-btn-ghost { background: transparent; color: var(--violet-ink); }
+.fc-btn-ghost:hover { background: var(--violet-soft); color: var(--violet-ink); }
+.fc-btn:disabled, .fc-btn[aria-disabled='true'] { opacity: .45; cursor: not-allowed; box-shadow: none; transform: none; }
+.fc-btn-magnetic { display: inline-flex; }
+
+/* Section heading */
+.fc-heading { display: grid; gap: var(--space-2); }
+.fc-heading-center { text-align: center; justify-items: center; }
+.fc-eyebrow { margin: 0; font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: var(--coral); }
+.fc-heading-title { margin: 0; font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+.fc-heading-lede { margin: var(--space-2) 0 0; max-width: 520px; font-size: 15px; line-height: 26px; color: var(--ink-muted); }
+
+/* Service item */
+.fc-service { display: grid; grid-template-columns: 52px 1fr; gap: var(--space-4); align-items: start; }
+.fc-chip { width: 52px; height: 52px; border-radius: var(--radius-pill); display: grid; place-items: center; box-shadow: var(--shadow-chip); }
+.fc-chip .ic { width: 24px; height: 24px; }
+.fc-chip-violet { background: var(--violet-soft); color: var(--violet-ink); }
+.fc-chip-coral { background: var(--coral-soft); color: var(--coral); }
+.fc-chip-sky { background: var(--sky-soft); color: var(--sky); }
+.fc-chip-mint { background: var(--mint-soft); color: var(--mint); }
+.fc-chip-sun { background: var(--sun-soft); color: var(--sun); }
+.fc-service-title { margin: 2px 0 var(--space-1); font-size: 18px; line-height: 26px; font-weight: 500; letter-spacing: .02em; color: var(--ink); }
+.fc-service-text { margin: 0; font-size: 13px; line-height: 20px; color: var(--ink-muted); }
+
+/* Social bar */
+.fc-social { margin: 0; list-style: none; display: inline-flex; gap: var(--space-4); padding: var(--space-3) var(--space-5); background: var(--surface-raised); border-radius: var(--radius-pill); box-shadow: var(--shadow-card); }
+.fc-social li { list-style: none; }
+.fc-social-btn { position: relative; width: 32px; height: 32px; border-radius: var(--radius-pill); display: grid; place-items: center; background: var(--violet-soft); color: var(--violet-ink); font-size: 12px; font-weight: 600; text-decoration: none; box-shadow: var(--shadow-chip); transition: background-color .15s ease, color .15s ease; }
+/* 32px chip, 44px hit area on desktop. */
+.fc-social-btn::after { content: ''; position: absolute; inset: -6px; border-radius: inherit; }
+.fc-social-btn:hover { background: var(--violet); color: var(--on-violet); }
+@media (max-width: 640px) {
+  /* Spec: chips grow to 44px on mobile. */
+  .fc-social { gap: var(--space-3); padding: var(--space-2) var(--space-4); }
+  .fc-social-btn { width: 44px; height: 44px; font-size: 13px; }
+  .fc-social-btn::after { content: none; }
+}
+
+/* Timeline item */
+.fc-tl { position: relative; display: grid; grid-template-columns: 16px 1fr; gap: var(--space-4); align-items: center; margin: 0; }
+.fc-tl-node { width: 10px; height: 10px; margin-left: 3px; border-radius: var(--radius-pill); background: var(--surface-raised); border: 2px solid var(--line); position: relative; z-index: 1; }
+.fc-tl-active .fc-tl-node { border-color: var(--coral); background: var(--coral); }
+.fc-tl-card { background: var(--surface-raised); border-radius: var(--radius-sm); padding: var(--space-5); box-shadow: var(--shadow-card); }
+.fc-tl-org { margin: 0 0 var(--space-1); font-size: 12px; line-height: 16px; font-weight: 500; color: var(--coral); }
+.fc-tl-title { margin: 0 0 var(--space-2); font-size: 18px; line-height: 26px; font-weight: 500; color: var(--ink); }
+.fc-tl-text { margin: 0; font-size: 13px; line-height: 20px; color: var(--ink-muted); }
+
+/* Testimonial */
+.fc-quote { margin: 0; background: var(--surface-raised); border-radius: var(--radius-sm); padding: var(--space-6); box-shadow: var(--shadow-card); max-width: 460px; }
+.fc-quote-head { display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-5); }
+.fc-quote-avatar { width: 48px; height: 48px; flex: none; border-radius: var(--radius-pill); display: grid; place-items: center; overflow: hidden; background: var(--coral-soft); color: var(--coral); font-weight: 600; font-size: 15px; box-shadow: 0 0 0 3px var(--surface-raised), 0 0 0 5px var(--coral-soft); }
+.fc-quote-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.fc-quote-name { display: block; font-size: 13px; line-height: 20px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+.fc-quote-role { display: block; font-size: 11px; line-height: 16px; letter-spacing: .12em; text-transform: uppercase; color: var(--coral); }
+.fc-quote-body { margin: 0; font-size: 15px; line-height: 28px; font-weight: 300; font-style: italic; color: var(--ink-muted); }
+.fc-quote-body p { margin: 0; }
+.fc-quote-sign { margin: var(--space-4) 0 0; font-size: 18px; font-style: italic; font-weight: 300; color: var(--ink); }
+
+/* Skill ring, years variant (page layer: 56px dial, years out of an 18-year career) */
+.ring { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4); background: var(--surface-raised); border-radius: var(--radius-sm); box-shadow: var(--shadow-card); }
+.ring-dial { position: relative; width: 56px; height: 56px; flex: none; }
+.ring-dial svg { display: block; width: 56px; height: 56px; transform: rotate(-90deg); }
+.ring-track { fill: none; stroke: var(--line); stroke-width: 3; }
+.ring-bar { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; }
+.ring-num { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; font-size: 12px; line-height: 13px; font-weight: 600; color: currentColor; font-variant-numeric: tabular-nums; }
+.ring-num small { display: block; font-size: 10px; font-weight: 500; }
+.ring-copy { display: grid; }
+.ring-label { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 15px; line-height: 22px; font-weight: 500; letter-spacing: .02em; color: var(--ink); }
