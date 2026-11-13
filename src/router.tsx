@@ -29,6 +29,8 @@ export const routes: RouteObject[] = [
           },
           {
             path: '*',
+            // The loader always throws a 404 to the boundary; Component only satisfies the router.
+            Component: NotFound,
             loader: () => {
               throw data(null, { status: 404, statusText: 'Not found' });
             },
